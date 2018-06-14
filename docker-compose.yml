@@ -1,0 +1,54 @@
+version: '2'
+
+services:
+  test:
+    depends_on:
+      - rdb
+      - app
+    build: "./test"
+    links:
+      - "rdb:rdb"
+      - "app:app"
+    environment:
+      PG_USER: postgres
+      PG_PASS: postgres
+      PG_NAME: letc
+      PG_HOST: rdb
+      PG_PORT: 5432
+      PGPASSWORD: postgres
+      APP_HOST: app
+      APP_PORT: 3000
+    command: "dockerize -timeout 60s -wait tcp://rdb:5432 npm run test"
+  app:
+    depends_on:
+      - rdb
+    build: "./app"
+    ports:
+      - "8080:3000"
+    links:
+      - "rdb:rdb"
+    environment:
+      PORT: 3000
+      NODE_ENV: develop
+      SESSION_SECRET: secret
+      PG_USER: postgres
+      PG_PASSWORD: postgres
+      PG_NAME: letc
+      PG_HOST: rdb
+      PG_PORT: 5432
+      SENDER_EMAIL: "mailto:test@gmail.com"
+      MAIL_SERVICE:
+      MAIL_USER:
+      MAIL_PASS:
+      MAIL_PORT:
+      MAIL_FROM:
+      MAIL_HOST:
+  rdb:
+    build: "./rdb"
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: letc
+    ports:
+      - "15432:5432"
+

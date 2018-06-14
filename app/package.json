@@ -1,0 +1,19 @@
+{
+  "name": "letc-smoke-test",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "stop": "node stop index.js",
+    "restart": "npm stop && npm start",
+    "test": "npm run localtest && npm run karma",
+    "develop": "echo 'Fail!'"
+  },
+  "author": "Takuya Sugiyama (@motojouya)",
+  "license": "ISC",
+  "dependencies": {
+    "letc": "^0.0.1",
+    "letc-pg": "^0.0.1"
+  }
+}
